@@ -18,4 +18,4 @@ I need as much information as you can give me, a Donation link, website link, gi
 
 # How to Use Installer Example
 
-[![](https://markdown-videos-api.jorgenkh.no/youtube/-PBHwivQJuc)](https://youtu.be/-PBHwivQJuc)
+[![Video 1](https://img.youtube.com/vi/-PBHwivQJuc/0.jpg)](https://www.youtube.com/watch?v=-PBHwivQJuc)
