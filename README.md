@@ -18,4 +18,4 @@ I need as much information as you can give me, a Donation link, website link, gi
 
 # How to Use Installer Example
 
-[![Video 1](https://img.youtube.com/vi/-PBHwivQJuc/0.jpg)](https://www.youtube.com/watch?v=-PBHwivQJuc)
+[![Video 1](./media/Screenshot%202025-02-13%20171530.png)](https://www.youtube.com/watch?v=-PBHwivQJuc)
