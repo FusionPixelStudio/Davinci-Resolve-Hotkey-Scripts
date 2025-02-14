@@ -113,15 +113,18 @@ end
 
 if not SCRIPT_INSTALLED then
     installScript()
-end
 
-print("Installed!")
-print("Removing Installing Variables!")
-fu = nil
-comp = nil
-installPath = nil
-currentPath = nil
-UserPath = nil
-newPath = nil
-SCRIPT_INSTALLED = nil
-collectgarbage('collect')
+    print("Installed!")
+    print("Removing Installing Variables!")
+    fu = nil
+    comp = nil
+    installPath = nil
+    currentPath = nil
+    UserPath = nil
+    newPath = nil
+    SCRIPT_INSTALLED = nil
+    collectgarbage('collect')
+    print("Please Restart Davinci")
+
+    return -- Stops The Script From Continuing. Remove if you want the script to launch right after installing
+end

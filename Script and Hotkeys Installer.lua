@@ -367,7 +367,7 @@ local function installScript()
 Installed To: ]] .. installPath .. [[
 
 ----------------------------------------
-Hotkey Added: ]] .. key .. [[
+[[
 
 ----------------------------------------
 Please Restart Davinci]])
@@ -375,18 +375,21 @@ end
 
 if not SCRIPT_INSTALLED then
     installScript()
-end
 
-print("Installed and Hotkeys Added!")
-print("Removing Installing Variables!")
-key = nil
-fu = nil
-comp = nil
-installPath = nil
-currentPath = nil
-userTbl = nil
-defaultHotkey = nil
-UserPath = nil
-newPath = nil
-SCRIPT_INSTALLED = nil
-collectgarbage('collect')
+    print("Installed and Hotkeys Added!")
+    print("Removing Installing Variables!")
+    key = nil
+    fu = nil
+    comp = nil
+    installPath = nil
+    currentPath = nil
+    userTbl = nil
+    defaultHotkey = nil
+    UserPath = nil
+    newPath = nil
+    SCRIPT_INSTALLED = nil
+    collectgarbage('collect')
+    print("Please Restart Davinci")
+
+    return -- Stops The Script From Continuing. Remove if you want the script to launch right after installing
+end

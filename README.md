@@ -8,7 +8,7 @@
 
 ## File Setup
 
-Please use the `Install and Hotkeys Example.lua` file to upgrade your script to include the ability to auto install and add a hotkey to the user's Davinci Resolve or Fusion.
+Please use the `Script and Hotkeys Installer.lua` file to upgrade your script to include the ability to auto install and add a hotkey to the user's Davinci Resolve or Fusion.
 
 ## Discord Submissions
 
