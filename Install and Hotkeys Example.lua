@@ -1,10 +1,10 @@
-local defaultHotkey = "SHIFT + I" -- Change to be what your default Hotkey for your tool will be
+local defaultHotkey = "SHIFT + I"           -- Change to be what your default Hotkey for your tool will be
 
-local profilePath = app:MapPath("Profile:")
+local profilePath = app:MapPath("Profile:") -- Should only be declared like this ONCE in an entire file
 local UserPath = profilePath .. "User.fu"
 local userTbl = bmd.readfile(UserPath)
 
-local scriptsPath = app:MapPath("Scripts:")
+local scriptsPath = app:MapPath("Scripts:")    -- Should only be declared like this ONCE in an entire file(if not, then it will choose the next MapPath under "Scripts", which isn't correct)
 local newPath = "Utility/Hotkey Prototype.lua" -- Change to Where to Save this Script and the Script Name
 local installPath = scriptsPath .. newPath
 local currentPath = arg[0]
@@ -299,3 +299,10 @@ if not SCRIPT_INSTALLED then
 end
 
 print("Installed!")
+print("Removing Installing Variables!")
+key = nil
+fu = nil
+comp = nil
+installPath = nil
+currentPath = nil
+userTbl = nil
