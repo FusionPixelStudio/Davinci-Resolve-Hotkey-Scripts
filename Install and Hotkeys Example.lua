@@ -162,8 +162,15 @@ local function askUser(customTitle, msg)
     local title
     local win = {}
     if not msg then
-        title = customTitle or "Choose a New Hotkey:"
-        win[1] = { "Hotkey", "Text", Name = "Type in your Hotkey", Default = "Shift + I (+ is required to combine keys)", Lines = 2 }
+        title = customTitle or "Hotkey In Use.\nChoose a New Hotkey:"
+        win[1] = {
+            "Hotkey",
+            "Text",
+            Name = "Type in your Hotkey",
+            Default =
+            "Shift + I (+ is required to combine keys)",
+            Lines = 2
+        }
     else
         title = customTitle or "WARNING"
         win[1] = { "Msg", "Text", Name = "Message: ", ReadOnly = true, Lines = 5, Wrap = true, Default = msg }
@@ -272,12 +279,12 @@ local function installScript()
     end
     local copied = CopyFile(currentPath, installPath)
     if not copied then
-        askUser("ERROR", "Failed to Copy Script to\n" .. installPath .. "\nFrom\n" .. currentPath)
+        askUser("ERROR", "Failed to Copy Script to\n" .. installPath .. "\nFrom\n" .. currentPath .. "\nNo Hotkey Added.")
         return
     end
     local added, key = addHotkey()
     if not added and key then
-        askUser("ERROR", "Failed to Add Hotkey\n" .. key)
+        askUser("ERROR", "Installed Script, But Failed to Add Hotkey:\n" .. key)
         return
     elseif not added then
         return
