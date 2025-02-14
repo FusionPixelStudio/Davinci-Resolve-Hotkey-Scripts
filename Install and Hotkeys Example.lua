@@ -298,4 +298,4 @@ if not SCRIPT_INSTALLED then
     installScript()
 end
 
-print("Script Finished!")
+print("Installed!")
