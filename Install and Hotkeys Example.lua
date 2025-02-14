@@ -1,3 +1,18 @@
+--[[
+    The Installer + Hotkey Launcher Package Script
+    Created By: Asher Roland
+    Created: Feb 2025
+
+    This Script is designed to be the header of your finished Lua Scripts for Davinci Resolve. This script acts as an Installer for the script it's in
+    After the script is installed, this code will also add a custom Hotkey that allows the user to launch the script with the hotkey from anywhere in Fusion
+
+    This code is also 100% accessible to Free Davinci Resolve Users, even with popups in the script in the "askUser" function
+
+    You are free to use this code in any projects
+    If you use Python, a python version is coming soon.
+]] --
+
+
 local defaultHotkey = "SHIFT + I"           -- DEVELOPER: Change to be what your default Hotkey for your tool will be
 
 local profilePath = app:MapPath("Profile:") -- Should only be declared like this ONCE in an entire file
