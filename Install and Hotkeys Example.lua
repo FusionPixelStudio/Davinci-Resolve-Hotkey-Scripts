@@ -1,5 +1,5 @@
 --[[
-    The Installer + Hotkey Launcher Package Script
+    The Script + Hotkey Installer
     Created By: Asher Roland
     Created: Feb 2025
 
@@ -19,10 +19,13 @@ local profilePath = app:MapPath("Profile:") -- Should only be declared like this
 local UserPath = profilePath .. "User.fu"
 local userTbl = bmd.readfile(UserPath)
 
-local scriptsPath = app:MapPath("Scripts:")    -- Should only be declared like this ONCE in an entire file(if not, then it will choose the next MapPath under "Scripts", which isn't correct)
-local newPath = "Utility/Hotkey Prototype.lua" -- DEVELOPER: Change to Where to Save this Script and the Script Name
+local scriptsPath = app:MapPath("Scripts:") -- Should only be declared like this ONCE in an entire file(if not, then it will choose the next MapPath under "Scripts", which isn't correct)
+local newPath =
+"Utility/Install Hotkey Example.lua"        -- DEVELOPER: Change to Where to Save this Script and the Script Name
 local installPath = scriptsPath .. newPath
 local currentPath = arg[0]
+
+local finalHotkeyCommand = "RunScript{ filename = 'Scripts:/" .. newPath .. "'}"
 
 local key
 
@@ -44,6 +47,8 @@ local SCRIPT_INSTALLED = ScriptIsInstalled()
 
 -- Checks if Key uses the valid hotkey terminally for the keys
 local function validateKey(key)
+    print("---------------------------------")
+    print("Validating Keys")
     local validKeys = {
         -- Control keys
         "BACKSPACE",
@@ -125,16 +130,43 @@ local function validateKey(key)
     end
 
     for _, word in ipairs(parts) do
+        print(word .. ":")
         if not validKeyLookup[word] then
+            print("---------------------------------")
             return false, word
         end
+        print("Valid")
     end
+    print("---------------------------------")
     return true
+end
+
+local function doesHotkeyStringExist(expectedString)
+    print("---------------------------------")
+    print("Checking Existing Hotkeys for Command")
+    print("Expected Command: " .. expectedString)
+    for _, group in pairs(userTbl) do
+        if group.Target == "FuFrame" then
+            for key, cmd in pairs(group) do
+                print("Found Command: " .. cmd)
+                if key ~= "Target" and cmd == expectedString then
+                    print("Match Found")
+                    print("---------------------------------")
+                    return true, key
+                end
+            end
+        end
+    end
+    print("No Matches")
+    print("---------------------------------")
+    return false
 end
 
 -- Finds Key in existing file, returns true if key already exists, returns false if no match exists
 -- Only checks FuFrame, all hotkeys added will go there
 local function checkKey(newKey)
+    print("---------------------------------")
+    print("Checking Key: " .. newKey)
     local target = "FuFrame"
     local foundEntry = nil
 
@@ -142,6 +174,8 @@ local function checkKey(newKey)
         if type(entry) == "table" and entry.Target == target then
             foundEntry = entry
             if entry[newKey] then
+                print("Key Combination Found in User.fu")
+                print("---------------------------------")
                 return true
             end
             break
@@ -153,15 +187,18 @@ local function checkKey(newKey)
         table.insert(userTbl, foundEntry)
         local isvalid = checkKey(newKey)
         if isvalid then
+            print("---------------------------------")
             return isvalid
         end
     end
 
     local isValidKey, word = validateKey(newKey)
     if not isValidKey then
-        print(word .. " is not valid to assign.")
+        print(word .. " is not valid to assign to Hotkeys.")
+        print("---------------------------------")
         return true
     end
+    print("---------------------------------")
     return false
 end
 
@@ -172,7 +209,7 @@ local function cleanKey(key)
     return key:upper()
 end
 
--- Reusable Function to send Messages to user without the UI system, (ui system) removed in 19.1
+-- Reusable Function to send Messages to user without the Fusion UI Manager, which was removed in Davinci V19.1
 local function askUser(customTitle, msg)
     local title
     local win = {}
@@ -210,6 +247,7 @@ local function CopyFile(source, target)
     print("Source File: " .. source)
     if not source_file then
         print("Source Could Not Open")
+        print("---------------------------------")
         return false
     end
     local contents = source_file:read("*a")
@@ -219,6 +257,7 @@ local function CopyFile(source, target)
     print("Target File" .. target)
     if not target_file then
         print("Target Could Not Open")
+        print("---------------------------------")
         return false
     end
     target_file:write(contents)
@@ -232,7 +271,7 @@ end
 local function updateUserTbl()
     for _, hotkeySet in ipairs(userTbl) do
         if hotkeySet.Target == "FuFrame" then
-            hotkeySet[key] = "RunScript{ filename = 'Scripts:/" .. newPath .. "'}"
+            hotkeySet[key] = finalHotkeyCommand
             return userTbl
         end
     end
@@ -263,11 +302,19 @@ end
 
 -- Writes new hotkey data to user.fu file
 local function addHotkey()
+    local exists, key = doesHotkeyStringExist(finalHotkeyCommand)
+    if exists then
+        print("A Keybind with that Command Already Exists.")
+        return 'stop', key
+    end
+    key = nil
     key = getKey()
 
     if key then
         local updatedUser = updateUserTbl()
         if updatedUser then
+            print("---------------------------------")
+            print("Updated User.fu Text\nAdding to File...")
             print("---------------------------------")
             print(bmd.writestring(updatedUser))
             print("---------------------------------")
@@ -276,10 +323,16 @@ local function addHotkey()
                 local success = userFile:write(bmd.writestring(updatedUser))
                 userFile:close()
                 if not success then
+                    print("Failed to write to file: " .. UserPath)
+                    print("---------------------------------")
                     return false
                 end
+                print("Successfully Updated User.fu File: " .. UserPath)
+                print("---------------------------------")
                 return true, key
             else
+                print("Failed to open file: " .. UserPath)
+                print("---------------------------------")
                 return false
             end
         end
@@ -301,7 +354,11 @@ local function installScript()
     if not added and key then
         askUser("ERROR", "Installed Script, But Failed to Add Hotkey:\n" .. key)
         return
-    elseif not added then
+    elseif not added and key == nil then
+        return
+    elseif added == 'stop' and key then
+        askUser("SUCCESS",
+            "Installed Script Successfully, Hotkey Already Exists:\n" .. key .. "\nWith Command:\n" .. finalHotkeyCommand)
         return
     end
     askUser("SUCCESS",
@@ -320,7 +377,7 @@ if not SCRIPT_INSTALLED then
     installScript()
 end
 
-print("Installed!")
+print("Installed and Hotkeys Added!")
 print("Removing Installing Variables!")
 key = nil
 fu = nil
