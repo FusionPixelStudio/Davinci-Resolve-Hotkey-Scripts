@@ -306,3 +306,8 @@ comp = nil
 installPath = nil
 currentPath = nil
 userTbl = nil
+defaultHotkey = nil
+UserPath = nil
+newPath = nil
+SCRIPT_INSTALLED = nil
+collectgarbage('collect')
